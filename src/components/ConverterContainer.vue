@@ -191,14 +191,28 @@ export default {
                     const rates = resp.data.rates; // Store available rates
 
                     // Filter currencies based on available rates
+                    // Object.keys(rates): gets an array of the currency codes from the rates object returned by the API. 
+                    // Each key represents a currency that has a conversion rate available
                     this.currenciesWithRates = Object.keys(rates).reduce((obj, key) => {
+                        // The reduce create a empty object, which will be built during the reduce
+                        // For each currency code in rates (API response) checks if exists in hardcoded rates
+                        // If it exist add it to the new object
                         if (this.currencies[key]) {
+                            // This is the way to add it
                             obj[key] = this.currencies[key];
                         }
+                        // Return the object
                         return obj;
                     }, {});
 
-                    this.defaultConversion(); // Perform initial conversion
+                    // If eur it's not included
+                    if (!this.currenciesWithRates['EUR']) {
+                        // Eur it's included with the from of the hardcoded element
+                        this.currenciesWithRates['EUR'] = this.currencies['EUR'];
+                    }
+
+                    // Perform initial conversion
+                    this.defaultConversion(); 
                 })
                 .catch(error => {
                     console.error("Error fetching available rates:", error);
