@@ -181,14 +181,31 @@ export default {
     },
     methods: {
         defaultConversion() {
+            // Passing to api link, the firstAmount and the currencies
             axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
                 .then(resp => {
                     console.log(resp.data.rates);
+                    // In the secondAmount i print the rates given back for the selected curr
                     this.secondAmount = resp.data.rates[this.secondCurr];
                 })
                 .catch(error => {
                     console.error("Error fetching conversion data:", error);
                 });
+        },
+        fetchConversionData() {
+            this.defaultConversion(); // Call the conversion function when watched properties change
+        },
+    },
+    watch: {
+        // Watch for changes in firstAmount
+        firstAmount: 'fetchConversionData',
+        // Watch for changes in firstCurr
+        firstCurr: 'fetchConversionData',
+        // Watch for changes in secondCurr
+        secondCurr: 'fetchConversionData',
+        // Watch for changes in secondAmount if needed (optional)
+        secondAmount: function(newValue) {
+            console.log('Second amount changed:', newValue);
         }
     }
 }
