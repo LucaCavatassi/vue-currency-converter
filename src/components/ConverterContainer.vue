@@ -161,9 +161,9 @@ export default {
                 "ZMW": "Zambian Kwacha",
                 "ZWL": "Zimbabwean Dollar",
             },
-
-
+            // Filtered currencies
             currenciesWithRates: {},
+
             // Default value for the first select
             firstCurr: 'EUR',  
             // Default value for the second select
@@ -235,6 +235,17 @@ export default {
         fetchConversionData() {
             this.defaultConversion(); // Call the conversion function when watched properties change
         },
+
+        switchData() {
+            // Use temporary variables to hold the values during the swap
+            const tempCurr = this.firstCurr;
+            this.firstCurr = this.secondCurr;
+            this.secondCurr = tempCurr;
+
+            const tempAmount = this.firstAmount;
+            this.firstAmount = this.secondAmount;
+            this.secondAmount = tempAmount;
+        }
     },
 
     watch: {
@@ -255,14 +266,18 @@ export default {
 <template>
     <h1>Currency Convert</h1>
     <div class="row align-items-center">
-        <div class="col-4">
+        <div class="col-3">
             <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
             <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates"></OptionsSelect>
         </div>
 
-        <div class="col-4">
+        <div class="col-1">
+            <button @click="this.switchData">Switch</button>
+        </div>
+
+        <div class="col-3">
             <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
