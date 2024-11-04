@@ -164,13 +164,33 @@ export default {
             // Default value for the first select
             firstCurr: 'EUR',  
             // Default value for the second select
-            secondCurr: 'USD'  
+            secondCurr: 'USD',
+            // FirstAmount
+            firstAmount: 1,
+            // SecondAmount
+            secondAmount: 0
         }
     },
 
     components: {
         OptionsSelect,
     },
+
+    mounted() {
+        this.defaultConversion();
+    },
+    methods: {
+        defaultConversion() {
+            axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
+                .then(resp => {
+                    console.log(resp.data.rates);
+                    this.secondAmount = resp.data.rates[this.secondCurr];
+                })
+                .catch(error => {
+                    console.error("Error fetching conversion data:", error);
+                });
+        }
+    }
 }
 </script>
 
@@ -178,14 +198,14 @@ export default {
     <h1>Currency Convert</h1>
     <div class="row align-items-center">
         <div class="col-4">
-            <input type="number" class="form-control" aria-label="Amount">
+            <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
             <OptionsSelect v-model="firstCurr" :currencies="currencies"></OptionsSelect>
         </div>
 
         <div class="col-4">
-            <input type="number" class="form-control" aria-label="Amount">
+            <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
             <OptionsSelect v-model="secondCurr" :currencies="currencies"></OptionsSelect>
