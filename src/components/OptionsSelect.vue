@@ -45,4 +45,10 @@ export default {
 </script>
 
 <style>
+select {
+    width: 150px; /* Set desired width */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+}
 </style>

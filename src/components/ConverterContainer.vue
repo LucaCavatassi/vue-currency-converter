@@ -176,12 +176,18 @@ export default {
 
 <template>
     <h1>Currency Convert</h1>
-    <div class="row">
-        <div class="col-6">
+    <div class="row align-items-center">
+        <div class="col-4">
+            <input type="number" class="form-control" aria-label="Amount">
+        </div>
+        <div class="col-2">
             <OptionsSelect v-model="firstCurr" :currencies="currencies"></OptionsSelect>
         </div>
 
-        <div class="col-6">
+        <div class="col-4">
+            <input type="number" class="form-control" aria-label="Amount">
+        </div>
+        <div class="col-2">
             <OptionsSelect v-model="secondCurr" :currencies="currencies"></OptionsSelect>
         </div>
     </div>
