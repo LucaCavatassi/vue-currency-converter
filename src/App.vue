@@ -1,8 +1,20 @@
 <script>
+  import ConverterContainer from "./components/ConverterContainer.vue";
+
+  export default {
+    components: {
+      ConverterContainer,
+    }
+  }
 </script>
 
 <template>
-  <h1>Hello</h1>
+
+  <div class="ms-cont text-white container pt-4">
+    <ConverterContainer></ConverterContainer>
+  </div>
+
+  <!-- HOW TO USE FAW -->
   <!-- <font-awesome-icon icon="coffee" /> -->
 </template>
 
