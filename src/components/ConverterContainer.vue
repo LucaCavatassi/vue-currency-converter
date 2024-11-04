@@ -161,6 +161,9 @@ export default {
                 "ZMW": "Zambian Kwacha",
                 "ZWL": "Zimbabwean Dollar",
             },
+
+
+            currenciesWithRates: {},
             // Default value for the first select
             firstCurr: 'EUR',  
             // Default value for the second select
@@ -177,9 +180,31 @@ export default {
     },
 
     mounted() {
-        this.defaultConversion();
+        this.fetchAvailableRates();
     },
+
     methods: {
+        fetchAvailableRates() {
+            // Fetch the latest conversion rates from the API
+            axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
+                .then(resp => {
+                    const rates = resp.data.rates; // Store available rates
+
+                    // Filter currencies based on available rates
+                    this.currenciesWithRates = Object.keys(rates).reduce((obj, key) => {
+                        if (this.currencies[key]) {
+                            obj[key] = this.currencies[key];
+                        }
+                        return obj;
+                    }, {});
+
+                    this.defaultConversion(); // Perform initial conversion
+                })
+                .catch(error => {
+                    console.error("Error fetching available rates:", error);
+                });
+        },
+
         defaultConversion() {
             // Passing to api link, the firstAmount and the currencies
             axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
@@ -192,10 +217,12 @@ export default {
                     console.error("Error fetching conversion data:", error);
                 });
         },
+
         fetchConversionData() {
             this.defaultConversion(); // Call the conversion function when watched properties change
         },
     },
+
     watch: {
         // Watch for changes in firstAmount
         firstAmount: 'fetchConversionData',
@@ -218,14 +245,14 @@ export default {
             <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
-            <OptionsSelect v-model="firstCurr" :currencies="currencies"></OptionsSelect>
+            <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates"></OptionsSelect>
         </div>
 
         <div class="col-4">
             <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
-            <OptionsSelect v-model="secondCurr" :currencies="currencies"></OptionsSelect>
+            <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates"></OptionsSelect>
         </div>
     </div>
 </template>
