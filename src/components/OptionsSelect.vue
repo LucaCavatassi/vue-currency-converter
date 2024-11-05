@@ -1,11 +1,3 @@
-<template>
-    <select v-model="selectedCurrency" @change="updateCurrency">
-        <option v-for="(fullName, code) in currencies" :key="code" :value="code">
-            {{ code }} - {{ fullName }} 
-        </option>
-    </select>
-</template>
-
 <script>
 export default {
     props: {
@@ -43,6 +35,16 @@ export default {
     },
 }
 </script>
+
+<template>
+    <select v-model="selectedCurrency" @change="updateCurrency">
+        <option v-for="(fullName, code) in currencies" :key="code" :value="code">
+            {{ code }} - {{ fullName }} 
+        </option>
+    </select>
+</template>
+
+
 
 <style>
 select {

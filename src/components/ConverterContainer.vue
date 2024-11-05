@@ -186,6 +186,10 @@ export default {
     },
 
     methods: {
+        roundTo(num, decimalPlaces) {
+        const factor = Math.pow(10, decimalPlaces);
+        return Math.round(num * factor) / factor;
+        },
         fetchAvailableRates() {
             // Fetch the latest conversion rates from the API
             axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
@@ -228,7 +232,7 @@ export default {
                 .then(resp => {
                     console.log(resp.data.rates);
                     // In the secondAmount i print the rates given back for the selected curr
-                    this.secondAmount = resp.data.rates[this.secondCurr];
+                    this.secondAmount = this.roundTo(resp.data.rates[this.secondCurr], 2);
                 })
                 .catch(error => {
                     console.error("Error fetching conversion data:", error);
@@ -238,7 +242,7 @@ export default {
             this.recalculating = true; // Set flag to avoid loop
             axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
                 .then(resp => {
-                    this.firstAmount = resp.data.rates[this.firstCurr];
+                    this.firstAmount = this.roundTo(resp.data.rates[this.firstCurr], 2);
                     this.recalculating = false; // Reset flag after calculation
                 })
                 .catch(error => {
