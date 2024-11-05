@@ -171,7 +171,9 @@ export default {
             // FirstAmount
             firstAmount: 1,
             // SecondAmount
-            secondAmount: 0
+            secondAmount: 0,
+            // Flag to prevent loop
+            recalculating: false
         }
     },
 
@@ -220,7 +222,8 @@ export default {
         },
 
         defaultConversion() {
-            // Passing to api link, the firstAmount and the currencies
+            if (this.recalculating) return //basically skips if it's inverse calculating so recalculating it's true
+            // Passing to api link, the first Amount and the currencies
             axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
                 .then(resp => {
                     console.log(resp.data.rates);
@@ -235,6 +238,19 @@ export default {
         fetchConversionData() {
             this.defaultConversion(); // Call the conversion function when watched properties change
         },
+
+        inverseConversion() {
+            this.recalculating = true; // Set flag to avoid loop
+            axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
+                .then(resp => {
+                    this.firstAmount = resp.data.rates[this.firstCurr];
+                    this.recalculating = false; // Reset flag after calculation
+                })
+                .catch(error => {
+                    console.error("Error fetching inverse conversion data:", error);
+                    this.recalculating = false; // Reset flag in case of error
+                });
+        },
     },
 
     watch: {
@@ -248,7 +264,6 @@ export default {
         secondAmount: function(newValue) {
             console.log('Second amount changed:', newValue);
         },
-       
     }
 }
 </script>
@@ -261,10 +276,6 @@ export default {
         </div>
         <div class="col-2">
             <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates"></OptionsSelect>
-        </div>
-
-        <div class="col-1">
-            <button @click="this.switchData">Switch</button>
         </div>
 
         <div class="col-3">
