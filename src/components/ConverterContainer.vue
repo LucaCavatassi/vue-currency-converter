@@ -234,11 +234,6 @@ export default {
                     console.error("Error fetching conversion data:", error);
                 });
         },
-
-        fetchConversionData() {
-            this.defaultConversion(); // Call the conversion function when watched properties change
-        },
-
         inverseConversion() {
             this.recalculating = true; // Set flag to avoid loop
             axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
@@ -254,16 +249,15 @@ export default {
     },
 
     watch: {
-        // Watch for changes in firstAmount
-        firstAmount: 'fetchConversionData',
-        // Watch for changes in firstCurr
-        firstCurr: 'fetchConversionData',
-        // Watch for changes in secondCurr
-        secondCurr: 'fetchConversionData',
-        // Watch for changes in secondAmount if needed (optional)
-        secondAmount: function(newValue) {
-            console.log('Second amount changed:', newValue);
-        },
+        firstAmount: 'defaultConversion',
+        firstCurr: 'defaultConversion',
+        secondCurr: 'defaultConversion',
+        // If recalculating it's false (always except input on second by user), and the newVal in the second amount it's differnt to oldVal
+        secondAmount(newVal, oldVal) {
+            if (!this.recalculating && newVal !== oldVal) {
+                this.inverseConversion(); // Trigger inverse calculation on secondAmount change
+            }
+        }
     }
 }
 </script>
