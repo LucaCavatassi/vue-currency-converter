@@ -235,17 +235,6 @@ export default {
         fetchConversionData() {
             this.defaultConversion(); // Call the conversion function when watched properties change
         },
-
-        switchData() {
-            // Use temporary variables to hold the values during the swap
-            const tempCurr = this.firstCurr;
-            this.firstCurr = this.secondCurr;
-            this.secondCurr = tempCurr;
-
-            const tempAmount = this.firstAmount;
-            this.firstAmount = this.secondAmount;
-            this.secondAmount = tempAmount;
-        }
     },
 
     watch: {
@@ -258,7 +247,8 @@ export default {
         // Watch for changes in secondAmount if needed (optional)
         secondAmount: function(newValue) {
             console.log('Second amount changed:', newValue);
-        }
+        },
+       
     }
 }
 </script>
