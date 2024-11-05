@@ -283,6 +283,8 @@ export default {
             <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates"></OptionsSelect>
         </div>
     </div>
+
+    
 </template>
 
 <style>
