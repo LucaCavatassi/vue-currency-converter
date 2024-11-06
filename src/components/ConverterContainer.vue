@@ -185,12 +185,14 @@ export default {
             axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
                 .then(resp => {
                     const rates = resp.data.rates;
+
                     this.currenciesWithRates = Object.keys(rates).reduce((obj, key) => {
                         if (this.currencies[key]) {
                             obj[key] = this.currencies[key];
                         }
                         return obj;
                     }, {});
+
                     if (!this.currenciesWithRates['EUR']) {
                         this.currenciesWithRates['EUR'] = this.currencies['EUR'];
                     }
@@ -222,30 +224,27 @@ export default {
     },
 
     watch: {
-        firstCurr(newValue) {
-            console.log("Updated firstCurr:", newValue);
-        },
-        secondCurr(newValue) {
-            console.log("Updated secondCurr:", newValue);
-        }
+        firstAmount: 'defaultConversion'
     },
 }
 </script>
 
 <template>
-    <h1>Currency Convert</h1>
-    <div class="row align-items-center">
-        <div class="col-3">
+    <h1 class="mb-5">Currency Convert</h1>
+    <div class="row align-items-center mb-3">
+        <div class="col-8">
             <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
         </div>
-        <div class="col-2">
+        <div class="col-4">
             <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
         </div>
+    </div>
 
-        <div class="col-3">
+    <div class="row align-items-center">
+        <div class="col-8">
             <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
         </div>
-        <div class="col-2">
+        <div class="col-4">
             <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
         </div>
     </div>
