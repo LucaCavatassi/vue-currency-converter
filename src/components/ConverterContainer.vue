@@ -166,6 +166,7 @@ export default {
             secondCurr: 'USD',
             firstAmount: 1,
             secondAmount: 0,
+            isCalculating: false,
         }
     },
 
@@ -176,8 +177,6 @@ export default {
     mounted() {
         this.fetchAvailableRates();
         this.defaultConversion();
-        console.log(this.secondCurr);
-        
     },
 
     methods: {
@@ -203,28 +202,34 @@ export default {
         },
 
         defaultConversion() {
-            axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
-                .then(resp => {
-                    this.secondAmount = resp.data.rates[this.secondCurr];
-                })
-                .catch(error => {
-                    console.error("Error fetching conversion data:", error);
-                });
-        },
-
-        inverseConversion() {
-            axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
+            if (!this.isCalculating) {
+                axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
+                    .then(resp => {
+                        this.secondAmount = resp.data.rates[this.secondCurr];
+                    })
+                    .catch(error => {
+                        console.error("Error fetching conversion data:", error);
+                    });
+            } else {
+                axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
                 .then(resp => {
                     this.firstAmount = resp.data.rates[this.firstCurr];
                 })
                 .catch(error => {
                     console.error("Error fetching inverse conversion data:", error);
                 });
+            }
         },
+
+        inverseConversion() {
+            this.isCalculating = true;
+        },
+
     },
 
     watch: {
         firstAmount: 'defaultConversion',
+        secondAmount: 'defaultConversion',
         firstCurr: 'defaultConversion',
         secondCurr: 'defaultConversion',
     },
@@ -237,7 +242,7 @@ export default {
     <div class="row align-items-center mb-3">
         <!-- Input -->
         <div class="col-8">
-            <input v-model="firstAmount" type="number" class="form-control" aria-label="amount">
+            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="form-control" aria-label="amount">
         </div>
         <!-- Input -->
 
@@ -253,7 +258,7 @@ export default {
     <div class="row align-items-center">
         <!-- Input -->
         <div class="col-8">
-            <input v-model="secondAmount" type="number" class="form-control" aria-label="amount">
+            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="form-control" aria-label="amount">
         </div>
         <!-- Input -->
 
