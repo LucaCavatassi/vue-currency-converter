@@ -161,16 +161,10 @@ export default {
                 "ZMW": "Zambian Kwacha",
                 "ZWL": "Zimbabwean Dollar",
             },
-            // Filtered currencies
             currenciesWithRates: {},
-
-            // Default value for the first select
             firstCurr: 'EUR',  
-            // Default value for the second select
             secondCurr: 'USD',
-            // FirstAmount
             firstAmount: 1,
-            // SecondAmount
             secondAmount: 0,
         }
     },
@@ -182,33 +176,22 @@ export default {
     mounted() {
         this.fetchAvailableRates();
         this.defaultConversion();
+        console.log(this.secondCurr);
+        
     },
 
     methods: {
         fetchAvailableRates() {
-            // Fetch the latest conversion rates from the API
             axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
                 .then(resp => {
-                    const rates = resp.data.rates; // Store available rates
-
-                    // Filter currencies based on available rates
-                    // Object.keys(rates): gets an array of the currency codes from the rates object returned by the API. 
-                    // Each key represents a currency that has a conversion rate available
+                    const rates = resp.data.rates;
                     this.currenciesWithRates = Object.keys(rates).reduce((obj, key) => {
-                        // The reduce create a empty object, which will be built during the reduce
-                        // For each currency code in rates (API response) checks if exists in hardcoded rates
-                        // If it exist add it to the new object
                         if (this.currencies[key]) {
-                            // This is the way to add it
                             obj[key] = this.currencies[key];
                         }
-                        // Return the object
                         return obj;
                     }, {});
-
-                    // If eur it's not included
                     if (!this.currenciesWithRates['EUR']) {
-                        // Eur it's included with the from of the hardcoded element
                         this.currenciesWithRates['EUR'] = this.currencies['EUR'];
                     }
                 })
@@ -220,18 +203,16 @@ export default {
         defaultConversion() {
             axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
                 .then(resp => {
-                    console.log(resp.data.rates);
                     this.secondAmount = resp.data.rates[this.secondCurr];
                 })
                 .catch(error => {
                     console.error("Error fetching conversion data:", error);
                 });
         },
-        
+
         inverseConversion() {
             axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
                 .then(resp => {
-                    console.log(resp.data.rates);
                     this.firstAmount = resp.data.rates[this.firstCurr];
                 })
                 .catch(error => {
@@ -241,11 +222,13 @@ export default {
     },
 
     watch: {
-        firstAmount: 'defaultConversion',
-        secondAmount: 'inverseConversion',
-        firstCurr: 'defaultConversion',
-        secondCurr: 'defaultConversion',
-    }
+        firstCurr(newValue) {
+            console.log("Updated firstCurr:", newValue);
+        },
+        secondCurr(newValue) {
+            console.log("Updated secondCurr:", newValue);
+        }
+    },
 }
 </script>
 
@@ -256,19 +239,14 @@ export default {
             <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
-            <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates"></OptionsSelect>
+            <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
         </div>
 
         <div class="col-3">
             <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
         </div>
         <div class="col-2">
-            <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates"></OptionsSelect>
+            <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
         </div>
     </div>
-
-    
 </template>
-
-<style>
-</style>
