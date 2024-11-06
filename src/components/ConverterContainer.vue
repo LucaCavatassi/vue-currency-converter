@@ -224,28 +224,45 @@ export default {
     },
 
     watch: {
-        firstAmount: 'defaultConversion'
+        firstAmount: 'defaultConversion',
+        firstCurr: 'defaultConversion',
+        secondCurr: 'defaultConversion',
     },
 }
 </script>
 
 <template>
     <h1 class="mb-5">Currency Convert</h1>
+    <!-- First -->
     <div class="row align-items-center mb-3">
+        <!-- Input -->
         <div class="col-8">
-            <input v-model="firstAmount" type="number" class="form-control" aria-label="Amount">
+            <input v-model="firstAmount" type="number" class="form-control" aria-label="amount">
         </div>
+        <!-- Input -->
+
+        <!-- Option -->
         <div class="col-4">
             <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
         </div>
+        <!-- Option -->
     </div>
+    <!-- First -->
 
+    <!-- Second -->
     <div class="row align-items-center">
+        <!-- Input -->
         <div class="col-8">
-            <input v-model="secondAmount" type="number" class="form-control" aria-label="Amount">
+            <input v-model="secondAmount" type="number" class="form-control" aria-label="amount">
         </div>
+        <!-- Input -->
+
+        <!-- Option -->
         <div class="col-4">
             <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
         </div>
+        <!-- Option -->
     </div>
+    <!-- Second -->
+
 </template>
