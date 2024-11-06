@@ -195,7 +195,16 @@ export default {
 
                     if (!this.currenciesWithRates['EUR']) {
                         this.currenciesWithRates['EUR'] = this.currencies['EUR'];
-                    }
+                    } 
+
+                    // Create an array of keys and sort them
+                    const sortedKeys = Object.keys(this.currenciesWithRates).sort((a, b) => a.localeCompare(b));
+
+                    // Rebuild the sorted object
+                    this.currenciesWithRates = sortedKeys.reduce((obj, key) => {
+                        obj[key] = this.currenciesWithRates[key];
+                        return obj;
+                    }, {});
                 })
                 .catch(error => {
                     console.error("Error fetching available rates:", error);
@@ -203,22 +212,26 @@ export default {
         },
 
         defaultConversion() {
-            if (!this.isCalculating) {
-                axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
+            if (this.firstAmount < 0 || this.secondAmount < 0 || this.firstCurr === this.secondCurr) {
+                alert('error')
+            } else {
+                if (!this.isCalculating) {
+                    axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
+                        .then(resp => {
+                            this.secondAmount = resp.data.rates[this.secondCurr];
+                        })
+                        .catch(error => {
+                            console.error("Error fetching conversion data:", error);
+                        });
+                } else {
+                    axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
                     .then(resp => {
-                        this.secondAmount = resp.data.rates[this.secondCurr];
+                        this.firstAmount = resp.data.rates[this.firstCurr];
                     })
                     .catch(error => {
-                        console.error("Error fetching conversion data:", error);
+                        console.error("Error fetching inverse conversion data:", error);
                     });
-            } else {
-                axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
-                .then(resp => {
-                    this.firstAmount = resp.data.rates[this.firstCurr];
-                })
-                .catch(error => {
-                    console.error("Error fetching inverse conversion data:", error);
-                });
+                }
             }
         },
 
