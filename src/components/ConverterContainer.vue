@@ -163,7 +163,7 @@ export default {
                 "ZWL": "Zimbabwean Dollar",
             },
             currenciesWithRates: {},
-            firstCurr: 'EUR',  
+            firstCurr: 'EUR',
             secondCurr: 'USD',
             firstAmount: 1,
             secondAmount: 0,
@@ -184,27 +184,23 @@ export default {
         fetchAvailableRates() {
             axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
                 .then(resp => {
-                    const rates = resp.data.rates;
+                    let rates = resp.data.rates;
 
-                    this.currenciesWithRates = Object.keys(rates).reduce((obj, key) => {
-                        if (this.currencies[key]) {
-                            obj[key] = this.currencies[key];
-                        }
-                        return obj;
-                    }, {});
+                    // Check if EUR is missing, if not add manually and gives a dull value of 1
+                    if (!rates['EUR']) {
+                        rates['EUR'] = 1; 
+                    }
 
-                    if (!this.currenciesWithRates['EUR']) {
-                        this.currenciesWithRates['EUR'] = this.currencies['EUR'];
-                    } 
+                    // Object keys extract only the keys (EUR, USD etc...)
+                    this.currenciesWithRates = Object.keys(rates)
+                        .sort()  // Sort currency codes in rates alphabetically
+                        // Reduce takes obj as an accumulator (final result) and iterate the second element so the keys and apply the function
+                        .reduce((obj, key) => {
+                            // This function for each currency code (key), it checks if there’s a corresponding value in this.currencies 
+                            obj[key] = this.currencies[key] || rates[key];  // if not apply it's rate
+                            return obj;
+                        }, {});
 
-                    // Create an array of keys and sort them
-                    const sortedKeys = Object.keys(this.currenciesWithRates).sort((a, b) => a.localeCompare(b));
-
-                    // Rebuild the sorted object
-                    this.currenciesWithRates = sortedKeys.reduce((obj, key) => {
-                        obj[key] = this.currenciesWithRates[key];
-                        return obj;
-                    }, {});
                 })
                 .catch(error => {
                     console.error("Error fetching available rates:", error);
@@ -225,12 +221,12 @@ export default {
                         });
                 } else {
                     axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
-                    .then(resp => {
-                        this.firstAmount = resp.data.rates[this.firstCurr];
-                    })
-                    .catch(error => {
-                        console.error("Error fetching inverse conversion data:", error);
-                    });
+                        .then(resp => {
+                            this.firstAmount = resp.data.rates[this.firstCurr];
+                        })
+                        .catch(error => {
+                            console.error("Error fetching inverse conversion data:", error);
+                        });
                 }
             }
         },
@@ -240,17 +236,17 @@ export default {
         },
 
         // Debounced version of the conversion method
-        debouncedDefaultConversion: debounce(function() {
+        debouncedDefaultConversion: debounce(function () {
             this.defaultConversion();
         }, 500)
 
     },
 
     watch: {
-        firstAmount(){
+        firstAmount() {
             this.debouncedDefaultConversion();
         },
-        secondAmount(){
+        secondAmount() {
             this.debouncedDefaultConversion();
         },
         firstCurr() {
@@ -269,7 +265,8 @@ export default {
     <div class="row align-items-center mb-3">
         <!-- Input -->
         <div class="col-8">
-            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="form-control" aria-label="amount">
+            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="form-control"
+                aria-label="amount">
         </div>
         <!-- Input -->
 
@@ -285,7 +282,8 @@ export default {
     <div class="row align-items-center">
         <!-- Input -->
         <div class="col-8">
-            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="form-control" aria-label="amount">
+            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="form-control"
+                aria-label="amount">
         </div>
         <!-- Input -->
 
