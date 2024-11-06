@@ -31,6 +31,9 @@ export default {
 }
 </script>
 
+<style>
+</style>
+
 <!-- Il model value passa firstCurr e secondCurr dal genitore in modo tale da passargli eur e usd come default che associo a selectedCurrency -->
 <!-- Allo stesso tempo selectedCurrency, è anche la variabile su cui aggiorno il v-model del componente stesso -->
 <!-- Al cambio quindi quando scelgo un altra opzione, emitto l'update del modelValue passandogli la selectedCurrency aggiornata al genitore -->
