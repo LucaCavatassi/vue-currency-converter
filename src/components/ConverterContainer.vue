@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
-import OptionsSelect from '../components/OptionsSelect.vue'
+import OptionsSelect from '../components/OptionsSelect.vue';
+import debounce from 'lodash/debounce';
 
 export default {
     data() {
@@ -225,13 +226,26 @@ export default {
             this.isCalculating = true;
         },
 
+        // Debounced version of the conversion method
+        debouncedDefaultConversion: debounce(function() {
+            this.defaultConversion();
+        }, 500)
+
     },
 
     watch: {
-        firstAmount: 'defaultConversion',
-        secondAmount: 'defaultConversion',
-        firstCurr: 'defaultConversion',
-        secondCurr: 'defaultConversion',
+        firstAmount(){
+            this.debouncedDefaultConversion();
+        },
+        secondAmount(){
+            this.debouncedDefaultConversion();
+        },
+        firstCurr() {
+            this.debouncedDefaultConversion();
+        },
+        secondCurr() {
+            this.debouncedDefaultConversion();
+        },
     },
 }
 </script>
