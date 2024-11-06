@@ -172,8 +172,6 @@ export default {
             firstAmount: 1,
             // SecondAmount
             secondAmount: 0,
-            // Flag to prevent loop
-            recalculating: false
         }
     },
 
@@ -183,13 +181,10 @@ export default {
 
     mounted() {
         this.fetchAvailableRates();
+        this.defaultConversion();
     },
 
     methods: {
-        roundTo(num, decimalPlaces) {
-        const factor = Math.pow(10, decimalPlaces);
-        return Math.round(num * factor) / factor;
-        },
         fetchAvailableRates() {
             // Fetch the latest conversion rates from the API
             axios.get(`https://api.frankfurter.app/latest?from=${this.firstCurr}`)
@@ -216,9 +211,6 @@ export default {
                         // Eur it's included with the from of the hardcoded element
                         this.currenciesWithRates['EUR'] = this.currencies['EUR'];
                     }
-
-                    // Perform initial conversion
-                    this.defaultConversion(); 
                 })
                 .catch(error => {
                     console.error("Error fetching available rates:", error);
@@ -226,42 +218,33 @@ export default {
         },
 
         defaultConversion() {
-            if (this.recalculating) return //basically skips if it's inverse calculating so recalculating it's true
-            // Passing to api link, the first Amount and the currencies
             axios.get(`https://api.frankfurter.app/latest?amount=${this.firstAmount}&from=${this.firstCurr}&to=${this.secondCurr}`)
                 .then(resp => {
                     console.log(resp.data.rates);
-                    // In the secondAmount i print the rates given back for the selected curr
-                    this.secondAmount = this.roundTo(resp.data.rates[this.secondCurr], 2);
+                    this.secondAmount = resp.data.rates[this.secondCurr];
                 })
                 .catch(error => {
                     console.error("Error fetching conversion data:", error);
                 });
         },
+        
         inverseConversion() {
-            this.recalculating = true; // Set flag to avoid loop
             axios.get(`https://api.frankfurter.app/latest?amount=${this.secondAmount}&from=${this.secondCurr}&to=${this.firstCurr}`)
                 .then(resp => {
-                    this.firstAmount = this.roundTo(resp.data.rates[this.firstCurr], 2);
-                    this.recalculating = false; // Reset flag after calculation
+                    console.log(resp.data.rates);
+                    this.firstAmount = resp.data.rates[this.firstCurr];
                 })
                 .catch(error => {
                     console.error("Error fetching inverse conversion data:", error);
-                    this.recalculating = false; // Reset flag in case of error
                 });
         },
     },
 
     watch: {
         firstAmount: 'defaultConversion',
+        secondAmount: 'inverseConversion',
         firstCurr: 'defaultConversion',
         secondCurr: 'defaultConversion',
-        // If recalculating it's false (always except input on second by user), and the newVal in the second amount it's differnt to oldVal
-        secondAmount(newVal, oldVal) {
-            if (!this.recalculating && newVal !== oldVal) {
-                this.inverseConversion(); // Trigger inverse calculation on secondAmount change
-            }
-        }
     }
 }
 </script>
