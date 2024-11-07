@@ -6,7 +6,7 @@ $focusGreen: #5ffe74;
 $transparentGreen: #79a47155;
 $waterGreen: #278664;
 $grey: #4e594a;
-
+$white: #fefeea;
 // MAIN
 #app {
     min-height: 100vh;
@@ -17,7 +17,7 @@ $grey: #4e594a;
 
 // INPUTS STYLING
 @mixin inputsStyles($border-color, $focus-color) {
-    border: $border-color!important;
+    border:2px solid $border-color!important;
 
     white-space: nowrap;
     overflow: hidden;

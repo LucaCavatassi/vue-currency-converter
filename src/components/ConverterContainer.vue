@@ -301,6 +301,6 @@ export default {
     @import '../style/general.scss';
 
     .ms-input {
-        @include inputsStyles($green, $focusGreen);
+        @include inputsStyles($focusGreen, $focusGreen);
     }
 </style>

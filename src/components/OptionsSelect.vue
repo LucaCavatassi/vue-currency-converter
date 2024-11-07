@@ -35,7 +35,7 @@ export default {
     @import "../style/general.scss";
 
     .ms-form {
-        @include inputsStyles($green, $focusGreen);
+        @include inputsStyles($focusGreen, $focusGreen);
     }
 </style>
 
