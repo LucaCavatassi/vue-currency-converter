@@ -32,13 +32,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import "../style/general.scss";
+@import "../style/general.scss";
 
-    .form-select {
-        border: $green;
-    }
-    
-    .form-select:focus {
+.form-select {
+    border: $green;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.form-select:focus {
     border-color: $focusGreen;
     outline: 0;
     box-shadow: 0 0 0.25rem 0.25rem $focusGreen;
