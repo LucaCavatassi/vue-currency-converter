@@ -262,6 +262,7 @@ export default {
     <h1 class="mb-3 fs-1 text-center text-uppercase">Currency Converter</h1>
     <div class="mt-3 container ms-cont p-5">
 
+        <!-- Info -->
         <div class="ms-info">
             <p class="fs-4 ms-1 mb-0">
                 <strong>{{ Math.trunc(firstAmount*100)/100  }} {{ firstCurr }}</strong> -
@@ -273,8 +274,9 @@ export default {
                 <span class="fs-5">{{ currenciesWithRates[secondCurr] }}</span>
             </p>
         </div>
+        <!-- Info -->
 
-        <!-- First -->
+        <!-- FirstInput -->
         <div class="row align-items-center mb-3">
             <!-- Input -->
             <div class="col-8">
@@ -289,9 +291,9 @@ export default {
             </div>
             <!-- Option -->
         </div>
-        <!-- First -->
+        <!-- FirstInput -->
     
-        <!-- Second -->
+        <!-- SecondInput -->
         <div class="row align-items-center">
             <!-- Input -->
             <div class="col-8">
@@ -306,7 +308,7 @@ export default {
             </div>
             <!-- Option -->
         </div>
-        <!-- Second -->
+        <!-- SecondInput -->
     </div>
 
 </template>
