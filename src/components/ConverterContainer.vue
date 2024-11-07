@@ -200,9 +200,6 @@ export default {
                             obj[key] = this.currencies[key] || rates[key];  // if not apply it's rate
                             return obj;
                         }, {});
-                        console.log(this.currenciesWithRates);
-                        
-
                 })
                 .catch(error => {
                     console.error("Error fetching available rates:", error);
@@ -265,20 +262,17 @@ export default {
     <h1 class="mb-3 fs-1 text-center text-uppercase">Currency Converter</h1>
     <div class="mt-3 container ms-cont p-5">
 
-        <div>
+        <div class="ms-info">
             <p class="fs-4 ms-1 mb-0">
-                <strong>{{ firstAmount }} {{ firstCurr }}</strong> -
+                <strong>{{ Math.trunc(firstAmount*100)/100  }} {{ firstCurr }}</strong> -
                 <span class="fs-5">{{ currenciesWithRates[firstCurr] }}</span> 
-                <span class="fs-6 ms-1">equals to</span>
+                <span class="fs-6 ms-3"><i>equals</i></span>
             </p>
             <p class="fs-5 ms-1">
-                <strong>{{ secondAmount }} {{ secondCurr }}</strong> -
+                <strong>{{ Math.trunc(secondAmount*100)/100 }} {{ secondCurr }}</strong> -
                 <span class="fs-5">{{ currenciesWithRates[secondCurr] }}</span>
             </p>
         </div>
-
-
-
 
         <!-- First -->
         <div class="row align-items-center mb-3">
@@ -324,13 +318,14 @@ export default {
     .ms-cont{
         border: 0.3rem solid $white;
         border-radius: 0.5rem;
-        // box-shadow: 0 0 0.5rem 0.25rem $white!important;
-
+        color: $white;
     }
+
     // Title
     h1 {
         color: $white
     }
+
     // Inputs
     .ms-input {
         @include inputsStyles($dollarGreen, $focusGreen);
