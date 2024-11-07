@@ -1,5 +1,5 @@
 <template>
-    <select v-model="selectedCurrency" @change="updateCurrency">
+    <select class="form-select" v-model="selectedCurrency" @change="updateCurrency">
         <option v-for="(fullName, code) in currencies" :key="code" :value="code">
             {{ code }} - {{ fullName }}
         </option>
@@ -31,7 +31,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+    .form-select {
+        box-shadow: 0 0 0 5px #79a47155;
+    }
 </style>
 
 <!-- Il model value passa firstCurr e secondCurr dal genitore in modo tale da passargli eur e usd come default che associo a selectedCurrency -->

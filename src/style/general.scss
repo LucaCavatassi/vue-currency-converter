@@ -2,4 +2,7 @@
 
 #app {
     min-height: 100vh;
+    background-color: #278664;
+    opacity: 0.9;
+    background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #278664 7px ), repeating-linear-gradient( #79a47155, #79a471 );
 }
