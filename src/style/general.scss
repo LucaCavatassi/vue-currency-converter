@@ -1,8 +1,16 @@
 @import "bootstrap/scss/bootstrap";
 
+// PALETTE
+$dollarGreen: #79a471;
+$focusGreen: #5ffe74;
+$transparentGreen: #79a47155;
+$waterGreen: #278664;
+$grey: #4e594a;
+
+// MAIN
 #app {
     min-height: 100vh;
-    background-color: #278664;
+    background-color: $waterGreen;
     opacity: 0.9;
-    background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #278664 7px ), repeating-linear-gradient( #79a47155, #79a471 );
+    background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, $waterGreen 7px ), repeating-linear-gradient( $transparentGreen, $dollarGreen );
 }
