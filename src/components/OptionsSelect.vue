@@ -35,17 +35,7 @@ export default {
 @import "../style/general.scss";
 
 .form-select {
-    border: $green;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.form-select:focus {
-    border-color: $focusGreen;
-    outline: 0;
-    box-shadow: 0 0 0.25rem 0.25rem $focusGreen;
+    @include formSelectStyles($green, $focusGreen);
 }
 </style>
 

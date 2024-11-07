@@ -265,7 +265,7 @@ export default {
     <div class="row align-items-center mb-3">
         <!-- Input -->
         <div class="col-8">
-            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="form-control"
+            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="form-control bg-dark text-white"
                 aria-label="amount">
         </div>
         <!-- Input -->
@@ -282,7 +282,7 @@ export default {
     <div class="row align-items-center">
         <!-- Input -->
         <div class="col-8">
-            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="form-control"
+            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="form-control bg-dark text-white"
                 aria-label="amount">
         </div>
         <!-- Input -->
@@ -297,5 +297,6 @@ export default {
 
 </template>
 
-<style>
+<style scoped lang="scss">
+    
 </style>

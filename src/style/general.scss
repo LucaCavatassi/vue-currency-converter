@@ -14,3 +14,18 @@ $grey: #4e594a;
     opacity: 0.9;
     background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, $waterGreen 7px ), repeating-linear-gradient( $transparentGreen, $dollarGreen );
 }
+
+// INPUTS STYLING
+@mixin formSelectStyles($border-color, $focus-color) {
+    border: $border-color;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:focus {
+        border-color: $focus-color;
+        outline: 0;
+        box-shadow: 0 0 0.25rem 0.25rem $focus-color;
+    }
+}
