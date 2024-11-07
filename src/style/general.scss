@@ -10,6 +10,8 @@ $white: #fefeea;
 // MAIN
 #app {
     min-height: 100vh;
+    font-family: "DM Mono", monospace, Arial, Helvetica, sans-serif;
+    color: $white!important;
     background-color: $waterGreen;
     opacity: 0.9;
     background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, $waterGreen 7px ), repeating-linear-gradient( $transparentGreen, $dollarGreen );

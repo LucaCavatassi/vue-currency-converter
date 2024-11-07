@@ -260,7 +260,7 @@ export default {
 </script>
 
 <template>
-    <h1 class="mb-5">Currency Convert</h1>
+    <h1 class="mb-3 text-center">Currency Converter</h1>
     <!-- First -->
     <div class="row align-items-center mb-3">
         <!-- Input -->
@@ -300,7 +300,10 @@ export default {
 <style scoped lang="scss">
     @import '../style/general.scss';
 
+    h1 {
+        color: $white
+    }
     .ms-input {
-        @include inputsStyles($focusGreen, $focusGreen);
+        @include inputsStyles($dollarGreen, $focusGreen);
     }
 </style>
