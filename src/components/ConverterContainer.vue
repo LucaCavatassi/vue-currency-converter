@@ -200,6 +200,8 @@ export default {
                             obj[key] = this.currencies[key] || rates[key];  // if not apply it's rate
                             return obj;
                         }, {});
+                        console.log(this.currenciesWithRates);
+                        
 
                 })
                 .catch(error => {
@@ -260,49 +262,76 @@ export default {
 </script>
 
 <template>
-    <h1 class="mb-3 text-center">Currency Converter</h1>
-    <!-- First -->
-    <div class="row align-items-center mb-3">
-        <!-- Input -->
-        <div class="col-8">
-            <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="ms-input form-control bg-dark text-white"
-                aria-label="amount">
-        </div>
-        <!-- Input -->
+    <h1 class="mb-3 fs-1 text-center text-uppercase">Currency Converter</h1>
+    <div class="mt-3 container ms-cont p-5">
 
-        <!-- Option -->
-        <div class="col-4">
-            <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
+        <div>
+            <p class="fs-4 ms-1 mb-0">
+                <strong>{{ firstAmount }} {{ firstCurr }}</strong> -
+                <span class="fs-5">{{ currenciesWithRates[firstCurr] }}</span> 
+                <span class="fs-6 ms-1">equals to</span>
+            </p>
+            <p class="fs-5 ms-1">
+                <strong>{{ secondAmount }} {{ secondCurr }}</strong> -
+                <span class="fs-5">{{ currenciesWithRates[secondCurr] }}</span>
+            </p>
         </div>
-        <!-- Option -->
+
+
+
+
+        <!-- First -->
+        <div class="row align-items-center mb-3">
+            <!-- Input -->
+            <div class="col-8">
+                <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="ms-input form-control bg-dark"
+                    aria-label="amount">
+            </div>
+            <!-- Input -->
+    
+            <!-- Option -->
+            <div class="col-4">
+                <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
+            </div>
+            <!-- Option -->
+        </div>
+        <!-- First -->
+    
+        <!-- Second -->
+        <div class="row align-items-center">
+            <!-- Input -->
+            <div class="col-8">
+                <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="ms-input form-control bg-dark"
+                    aria-label="amount">
+            </div>
+            <!-- Input -->
+    
+            <!-- Option -->
+            <div class="col-4">
+                <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
+            </div>
+            <!-- Option -->
+        </div>
+        <!-- Second -->
     </div>
-    <!-- First -->
-
-    <!-- Second -->
-    <div class="row align-items-center">
-        <!-- Input -->
-        <div class="col-8">
-            <input @keyup="inverseConversion" v-model="secondAmount" type="number" class="ms-input form-control bg-dark text-white"
-                aria-label="amount">
-        </div>
-        <!-- Input -->
-
-        <!-- Option -->
-        <div class="col-4">
-            <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
-        </div>
-        <!-- Option -->
-    </div>
-    <!-- Second -->
 
 </template>
 
 <style scoped lang="scss">
     @import '../style/general.scss';
 
+    // Container
+    .ms-cont{
+        border: 0.3rem solid $white;
+        border-radius: 0.5rem;
+        // box-shadow: 0 0 0.5rem 0.25rem $white!important;
+
+    }
+    // Title
     h1 {
         color: $white
     }
+    // Inputs
     .ms-input {
         @include inputsStyles($dollarGreen, $focusGreen);
     }

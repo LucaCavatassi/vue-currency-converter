@@ -20,7 +20,7 @@ $white: #fefeea;
 // INPUTS STYLING
 @mixin inputsStyles($border-color, $focus-color) {
     border:2px solid $border-color!important;
-
+    color: $white!important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

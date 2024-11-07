@@ -1,5 +1,5 @@
 <template>
-    <select class="form-select bg-dark text-white ms-form" v-model="selectedCurrency" @change="updateCurrency">
+    <select class="form-select bg-dark ms-form" v-model="selectedCurrency" @change="updateCurrency">
         <option v-for="(fullName, code) in currencies" :key="code" :value="code">
             {{ code }} - {{ fullName }}
         </option>
