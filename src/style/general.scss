@@ -16,16 +16,16 @@ $grey: #4e594a;
 }
 
 // INPUTS STYLING
-@mixin formSelectStyles($border-color, $focus-color) {
-    border: $border-color;
+@mixin inputsStyles($border-color, $focus-color) {
+    border: $border-color!important;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
     &:focus {
-        border-color: $focus-color;
+        border-color: $focus-color!important;
         outline: 0;
-        box-shadow: 0 0 0.25rem 0.25rem $focus-color;
+        box-shadow: 0 0 0.25rem 0.25rem $focus-color!important;
     }
 }
