@@ -2,12 +2,9 @@
 import axios from 'axios';
 import OptionsSelect from './OptionsSelect.vue';
 import debounce from 'lodash/debounce';
-import hello from './hello.vue'
-import Charts from './Charts.vue';
 export default {
     components: {
-        Charts,
-        hello,
+        OptionsSelect,
     },
     data() {
         return {
@@ -314,8 +311,6 @@ export default {
         </div>
         <!-- SecondInput -->
     </div>
-
-    <Charts></Charts>
 </template>
 
 <style scoped lang="scss">

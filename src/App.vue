@@ -1,9 +1,11 @@
 <script>
-  import ConverterContainer from "./components/ConverterContainer.vue";
+  import Charts from "./components/Charts.vue";
+import ConverterContainer from "./components/ConverterContainer.vue";
 
   export default {
     components: {
       ConverterContainer,
+      Charts
     }
   }
   
@@ -13,6 +15,7 @@
 
   <div class="ms-cont text-white container pt-4">
     <ConverterContainer></ConverterContainer>
+    <Charts></Charts>
   </div>
 
   <!-- HOW TO USE FAW -->

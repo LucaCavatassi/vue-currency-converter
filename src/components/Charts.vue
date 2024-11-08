@@ -1,4 +1,5 @@
 <template>
+    <h3 class="text-center text-uppercase mt-3">Rates in the last 30 days</h3>
     <div>
         <!-- Render the chart only when chartData is available -->
         <LineChart v-if="chartData" :data="chartData" :options="chartOptions" />
@@ -67,7 +68,7 @@ export default {
                         {
                             label: `${baseCurrency} to ${targetCurrency} Exchange Rate`,
                             data: values,
-                            borderColor: '#42A5F5',
+                            borderColor: '#5ffe74',
                             backgroundColor: 'rgba(66, 165, 245, 0.2)',
                             fill: true,
                             tension: 0.4
@@ -84,11 +85,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../style/general.scss';
+
+h3 {
+    color: $white;
+}
 div {
-    background-color: white;
+    color: $white;
+    background-color: $white;
+    border-radius: 0.5rem;
+    
     width: 100%;
-    max-width: 600px;
     margin: 0 auto;
 }
 </style>
