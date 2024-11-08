@@ -1,9 +1,14 @@
 <script>
 import axios from 'axios';
-import OptionsSelect from '../components/OptionsSelect.vue';
+import OptionsSelect from './OptionsSelect.vue';
 import debounce from 'lodash/debounce';
-
+import hello from './hello.vue'
+import Charts from './Charts.vue';
 export default {
+    components: {
+        Charts,
+        hello,
+    },
     data() {
         return {
             // All currencies
@@ -286,7 +291,7 @@ export default {
     
             <!-- Option -->
             <div class="col-4">
-                <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates" />
+                <OptionsSelect v-model="firstCurr" :currencies="currenciesWithRates"></OptionsSelect>
             </div>
             <!-- Option -->
         </div>
@@ -303,13 +308,14 @@ export default {
     
             <!-- Option -->
             <div class="col-4">
-                <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates" />
+                <OptionsSelect v-model="secondCurr" :currencies="currenciesWithRates"></OptionsSelect>
             </div>
             <!-- Option -->
         </div>
         <!-- SecondInput -->
     </div>
 
+    <Charts></Charts>
 </template>
 
 <style scoped lang="scss">
