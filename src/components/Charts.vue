@@ -28,6 +28,10 @@ export default {
     components: {
         LineChart: Line
     },
+    props: {
+        firstCurr: String,
+        secondCurr: String,
+    },
     data() {
         return {
             chartData: null,
@@ -44,42 +48,59 @@ export default {
         }
     },
     async mounted() {
-        const baseCurrency = 'USD'
-        const targetCurrency = 'EUR'
-        const endDate = new Date().toISOString().slice(0, 10)
-        const startDate = new Date()
-        startDate.setDate(startDate.getDate() - 30)
-        const startDateString = startDate.toISOString().slice(0, 10)
-
-        try {
-            const response = await fetch(`https://api.frankfurter.app/${startDateString}..${endDate}?from=${baseCurrency}&to=${targetCurrency}`)
-            if (!response.ok) throw new Error('Failed to fetch data')
-            const data = await response.json()
-
-            // Validate and process the API response data
-            if (data && data.rates) {
-                const labels = Object.keys(data.rates)
-                const values = labels.map(date => data.rates[date][targetCurrency])
-
-                // Ensure the structure of chartData is correct for vue-chartjs
-                this.chartData = {
-                    labels,
-                    datasets: [
-                        {
-                            label: `${baseCurrency} to ${targetCurrency} Exchange Rate`,
-                            data: values,
-                            borderColor: '#5ffe74',
-                            backgroundColor: 'rgba(66, 165, 245, 0.2)',
-                            fill: true,
-                            tension: 0.4
-                        }
-                    ]
-                }
-            } else {
-                console.error("Unexpected data format from API")
+        await this.fetchChartData(); // Initial chart data fetch
+    },
+    watch: {
+        firstCurr(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.fetchChartData(); // Re-fetch data when firstCurr changes
             }
-        } catch (error) {
-            console.error("Error fetching data from Frankfurter API:", error)
+        },
+        secondCurr(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.fetchChartData(); // Re-fetch data when secondCurr changes
+            }
+        }
+    },
+    methods: {
+        async fetchChartData() {
+            const baseCurrency = this.firstCurr
+            const targetCurrency = this.secondCurr
+            const endDate = new Date().toISOString().slice(0, 10)
+            const startDate = new Date()
+            startDate.setDate(startDate.getDate() - 30)
+            const startDateString = startDate.toISOString().slice(0, 10)
+
+            try {
+                const response = await fetch(`https://api.frankfurter.app/${startDateString}..${endDate}?from=${baseCurrency}&to=${targetCurrency}`)
+                if (!response.ok) throw new Error('Failed to fetch data')
+                const data = await response.json()
+
+                // Validate and process the API response data
+                if (data && data.rates) {
+                    const labels = Object.keys(data.rates)
+                    const values = labels.map(date => data.rates[date][targetCurrency])
+
+                    // Ensure the structure of chartData is correct for vue-chartjs
+                    this.chartData = {
+                        labels,
+                        datasets: [
+                            {
+                                label: `${baseCurrency} to ${targetCurrency} Exchange Rate`,
+                                data: values,
+                                borderColor: '#5ffe74',
+                                backgroundColor: 'rgba(66, 165, 245, 0.2)',
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    }
+                } else {
+                    console.error("Unexpected data format from API")
+                }
+            } catch (error) {
+                console.error("Error fetching data from Frankfurter API:", error)
+            }
         }
     }
 }
@@ -95,7 +116,6 @@ div {
     color: $white;
     background-color: $white;
     border-radius: 0.5rem;
-    
     width: 100%;
     margin: 0 auto;
 }

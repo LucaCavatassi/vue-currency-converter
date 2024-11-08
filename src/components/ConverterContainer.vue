@@ -176,7 +176,7 @@ export default {
     components: {
         OptionsSelect,
     },
-
+    emits: ['updateFirstCurr', 'updateSecondCurr'],
     mounted() {
         this.fetchAvailableRates();
         this.defaultConversion();
@@ -252,9 +252,11 @@ export default {
         },
         firstCurr() {
             this.debouncedDefaultConversion();
+            this.$emit('update-first-curr', this.firstCurr);
         },
         secondCurr() {
             this.debouncedDefaultConversion();
+            this.$emit('update-first-curr', this.secondCurr);
         },
     },
 }
