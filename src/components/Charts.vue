@@ -29,6 +29,7 @@ export default {
     components: {
         LineChart: Line
     },
+    emits: ['update-first-curr', 'update-second-curr'],
     props: {
         firstCurr: String,
         secondCurr: String,

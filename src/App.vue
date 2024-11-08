@@ -14,6 +14,7 @@ export default {
       secondCurr: 'USD',
     };
   },
+  emits: ['update-first-curr', 'update-second-curr'],
   methods: {
     handleFirstCurrUpdate(newFirstCurr) {
       this.firstCurr = newFirstCurr;  // Update firstCurr in parent
