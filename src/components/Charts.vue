@@ -17,11 +17,12 @@ import {
     LineElement,
     CategoryScale,
     LinearScale,
-    PointElement
+    PointElement,
+    Filler
 } from 'chart.js'
 
 // Register required components globally
-ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
+ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler)
 
 export default {
     name: 'Charts',
@@ -89,7 +90,7 @@ export default {
                                 label: `${baseCurrency} to ${targetCurrency} Exchange Rate`,
                                 data: values,
                                 borderColor: '#5ffe74',
-                                backgroundColor: 'rgba(66, 165, 245, 0.2)',
+                                backgroundColor: '#79a47155',
                                 fill: true,
                                 tension: 0.4
                             }
@@ -118,5 +119,6 @@ div {
     border-radius: 0.5rem;
     width: 100%;
     margin: 0 auto;
+    padding: 3rem;
 }
 </style>
