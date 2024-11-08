@@ -265,12 +265,12 @@ export default {
         <!-- Info -->
         <div class="ms-info">
             <p class="fs-4 ms-1 mb-0">
-                <strong>{{ Math.trunc(firstAmount*100)/100  }} {{ firstCurr }}</strong> -
+                <strong>{{ (Math.trunc(firstAmount * 100) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }) }} {{ firstCurr }}</strong> -
                 <span class="fs-5">{{ currenciesWithRates[firstCurr] }}</span> 
                 <span class="fs-6 ms-3"><i>equals</i></span>
             </p>
             <p class="fs-5 ms-1">
-                <strong>{{ Math.trunc(secondAmount*100)/100 }} {{ secondCurr }}</strong> -
+                <strong>{{ (Math.trunc(secondAmount * 100) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 }) }} {{ secondCurr }}</strong> -
                 <span class="fs-5">{{ currenciesWithRates[secondCurr] }}</span>
             </p>
         </div>
@@ -280,8 +280,7 @@ export default {
         <div class="row align-items-center mb-3">
             <!-- Input -->
             <div class="col-8">
-                <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="ms-input form-control bg-dark"
-                    aria-label="amount">
+                <input @keyup="isCalculating = false" v-model="firstAmount" type="number" class="ms-input form-control bg-dark" aria-label="amount">
             </div>
             <!-- Input -->
     
